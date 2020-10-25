@@ -108,6 +108,41 @@ exports.updateUser = async (req, res) => {
   }
 };
 
+exports.updatePhotoProfile = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await User.update(
+      { image: req.file.filename },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    const user = await User.findOne({
+      where: {
+        id,
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
+    res.send({
+      message: `Photo picture success updated`,
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      error: {
+        message: "Server ERROR",
+      },
+    });
+  }
+};
+
 exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;

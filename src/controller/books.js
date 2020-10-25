@@ -188,7 +188,7 @@ exports.readAprovedBooksCategory = async (req, res) => {
     const { title } = req.params;
     const Op = Sequelize.Op;
     const aprovedBooks = await Books.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [["publication", "DESC"]],
       where: {
         status: "Aproved",
         title: {
@@ -279,17 +279,19 @@ exports.readYear = async (req, res) => {
 
 exports.readAprovedBooksCategoryYear = async (req, res) => {
   try {
-    const { title, pub } = req.params;
+    let { title, pub } = req.params;
 
     const Op = Sequelize.Op;
     const aprovedBooks = await Books.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [["publication", "DESC"]],
       where: {
         status: "Aproved",
         title: {
           [Op.like]: "%" + title + "%",
         },
-        publication: pub,
+        publication: {
+          [Op.gt]: pub + "/01/01",
+        },
       },
       attributes: {
         exclude: [

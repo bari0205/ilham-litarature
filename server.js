@@ -16,6 +16,8 @@ const routerDb = require("./src/routes/routerDb");
 app.use(express.json());
 
 app.use(cors());
+//use src/uploads/img as static
+app.use("/src/uploads/img", express.static("src/uploads/img"));
 
 app.use("/api/v1/", routerDb);
 

@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const { authenticated } = require("../../middleware/authentication");
+const { uploadImage } = require("../../middleware/upload");
 
 //Categories
 const {
@@ -26,11 +27,18 @@ const {
   createUser,
   deleteUser,
   updateUser,
+  updatePhotoProfile,
 } = require("../controller/user");
 
 router.get("/user", getUser);
 router.get("/user/:id", readOneUser);
-router.patch("/user/:id", updateUser);
+// router.patch("/user/:id", updateUser);
+router.patch(
+  "/user/:id",
+  authenticated,
+  uploadImage("image"),
+  updatePhotoProfile
+);
 router.post("/user", createUser);
 router.delete("/user/:id", deleteUser);
 
